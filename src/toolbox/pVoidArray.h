@@ -8,6 +8,9 @@ typedef struct {
 	void* (*last)(struct pVoidArray*);
 	void (*add)(struct pVoidArray*, void* data);
 	int (*size)(struct pVoidArray*);
+
+	void (*allocate)(struct pVoidArray*, int size); // аллоцирует память с последнего элемента
+	void (*set)(struct pVoidArray* arr, void* data, int index);
 } pVoidArrayInterface;
 
 typedef struct pVoidArray {

@@ -4,8 +4,8 @@
 struct TextureItem;
 
 typedef struct {
-	void (*bind)(struct TextureItem* tx);
-	void (*unbind)(struct TextureItem* tx);
+	int (*bind)(struct TextureItem* tx, int unit);
+	void (*unbind)(struct TextureItem* tx, int unit);
 	void (*destroy)(struct TextureItem* tx);
 } TextureItemInterface;	
 

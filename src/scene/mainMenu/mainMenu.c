@@ -62,7 +62,7 @@ static void _draw(SceneBucket* b, Scene* scn) {
 	glEnd();
 
 	// texture layer
-	mainMenuBackground.ops->bind(&mainMenuBackground);
+	mainMenuBackground.ops->bind(&mainMenuBackground, 0);
 	glColor4f(1,1,1,0.2f);
 
 	glBegin(GL_QUADS);
@@ -72,7 +72,7 @@ static void _draw(SceneBucket* b, Scene* scn) {
 		glTexCoord2f(0,0); glVertex2f(-1, 1);
 	glEnd();
 
-	mainMenuBackground.ops->unbind(&mainMenuBackground);
+	mainMenuBackground.ops->unbind(&mainMenuBackground, 0);
 
 	// glitch layer
 	draw_noise();

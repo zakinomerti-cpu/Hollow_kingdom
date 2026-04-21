@@ -1,8 +1,10 @@
 #define STB_IMAGE_IMPLEMENTATION
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <GL/glu.h>
 #include "texture.h"
 #include "stb/stb_image.h"
+
+static int currentTexture;
 
 static GLuint _create(const char* filename) {
     int width, height, channels;
@@ -40,15 +42,20 @@ static GLuint _create(const char* filename) {
     return tex_id;
 }
 
-static void _bind(TextureItem* tx) {
+static int _bind(TextureItem* tx, int unit) {
 	if(tx && tx->id) {
-		glEnable(GL_TEXTURE_2D);
+		//glEnable(GL_TEXTURE_2D);
+        glActiveTexture(GL_TEXTURE0 + unit);
 		glBindTexture(GL_TEXTURE_2D, tx->id);
+        return unit;
 	}
+    return -1;
 }
-static void _unbind(TextureItem* tx) {
+static void _unbind(TextureItem* tx, int unit) {
 	if(tx && tx->id) {
+        glActiveTexture(GL_TEXTURE0 + unit);
 		glBindTexture(GL_TEXTURE_2D, 0);
+        //glDisable(GL_TEXTURE_2D);
 	}
 }
 static void _destroy(TextureItem* tx) {
@@ -68,4 +75,6 @@ void textureItem_init(TextureItem* tx, const char* path) {
 	if(!tx || !path) return;
 	tx->id = _create(path);
 	tx->ops = &ops;
+
+    currentTexture = GL_TEXTURE0;
 }

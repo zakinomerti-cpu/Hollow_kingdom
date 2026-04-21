@@ -29,11 +29,27 @@ static int _size(pVoidArray* arr) {
 	return arr->size;
 }
 
+static void _set(pVoidArray* arr, void* data, int index) {
+	if(!arr || !data) return;
+	if(index < 0 || index >= arr->size) return;
+	arr->data[index] = data;
+}
+
+static void _allocate(pVoidArray* arr, int size) {
+	if(!arr) return;
+	for(int i = 0; i < size; i++) {
+		arr->ops->add(arr, NULL);
+	}
+}
+
 static const pVoidArrayInterface ops = {
 	_get,
 	_last,
 	_add,
-	_size
+	_size,
+
+	_allocate,
+	_set
 };
 
 pVoidArray pVoidArrayCreate() {
