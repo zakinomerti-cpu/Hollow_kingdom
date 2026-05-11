@@ -4,7 +4,7 @@ project(njako C)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED True)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/build)
-# Все исходники
+
 add_library(main OBJECT
         src/main.c
         src/platform.c
@@ -23,7 +23,6 @@ add_library(main OBJECT
         src/persons/konata/konata.c
 )
 
-# Пути к заголовкам (ваши локальные + системные)
 target_include_directories(main PRIVATE
         ${PROJECT_SOURCE_DIR}/src
         ${PROJECT_SOURCE_DIR}/src/scene
@@ -41,20 +40,17 @@ target_include_directories(main PRIVATE
 
 add_executable(my_program $<TARGET_OBJECTS:main>)
 
-# Поиск системных библиотек
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
 find_package(GLEW REQUIRED)
 
-# Линковка с системными библиотеками
 target_link_libraries(my_program PRIVATE
         ${OPENGL_LIBRARIES}
         ${GLUT_LIBRARIES}
         ${GLEW_LIBRARIES}
-        m  # математическая библиотека
+        m
 )
 
-# Для статической линковки GLEW (опционально)
 target_compile_definitions(my_program PRIVATE
         GLEW_STATIC
 )
