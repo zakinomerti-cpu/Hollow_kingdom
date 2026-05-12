@@ -1,6 +1,5 @@
 #include "scene.h"
 #include "platform.h"
-#include "createPersons.h"
 #include <string.h>
 
 
@@ -87,23 +86,6 @@ static const SceneInterface ops = {
 
 
 void SceneInit(Scene* scn, platform* plt) {
-	Player player = {0};
-	strcpy(player.name, "magistor");
-	player.pos[0] = 0.0f;
-	player.pos[1] = 0.0f;
-	player.pos[2] = 0.0f;
-	player.abilityIds[0] = 0;
-	player.activeAbilityIds[0] = 0;
-
-	Person persons[1]; 
-	createPersonArray(persons, 1);
-
-	gameState gs = {0};
-	gs.person_count = 1;
-	gs.player = player;
-	gs.current_enemy_id = -1;
-	memcpy(gs.persons, persons, sizeof(persons));
-	scn->gs = gs;
 
 	scn->isInit = 1;
 	scn->sceneCount = 0;

@@ -1,8 +1,6 @@
 #ifndef scene_header_h
 #define scene_header_h
 
-#include "gameState.h"
-
 struct Scene;
 struct platform;
 struct SceneBucket;
@@ -33,7 +31,6 @@ typedef struct {
 } SceneInterface;
 
 typedef struct Scene {
-	gameState gs;
 	unsigned char isInit;
 	unsigned char sceneCount;
 	int currentScene;

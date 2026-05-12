@@ -21,7 +21,7 @@ typedef struct {
 typedef struct sceneManager {
 	char isInit;
 	struct Scene scn;
-	sceneManagerInterface* ops;
+	const sceneManagerInterface* ops;
 } sceneManager;
 
 

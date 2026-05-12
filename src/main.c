@@ -12,7 +12,7 @@ int main(int argc, char** argv) {
 	sm.ops->run(&sm);
 	sm.ops->destroy(&sm);
 
-	printf("12\n");
+	printf("13\n");
 	return 0;
 
 }
