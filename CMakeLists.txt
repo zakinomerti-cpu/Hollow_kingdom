@@ -42,8 +42,6 @@ target_include_directories(renderer_object PRIVATE
 
 target_include_directories(scene_object PRIVATE
         ${PROJECT_SOURCE_DIR}/src/scene
-        ${PROJECT_SOURCE_DIR}/src/scene/idle
-        ${PROJECT_SOURCE_DIR}/src/scene/mainMenu
         ${PROJECT_SOURCE_DIR}/src
 )
 
