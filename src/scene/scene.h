@@ -19,7 +19,7 @@ typedef struct SceneBucket {
 typedef struct {
 	//setter and getter
 	void (*setCurrentScene)(struct Scene*, unsigned char);
-	unsigned char (*getCurrentSceneIndex)(struct Scene*);
+	unsigned char (*getCurrentSceneIndex)(const struct Scene*);
 	
 	//process
 	int (*processLogic)(struct Scene*);

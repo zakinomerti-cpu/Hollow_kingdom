@@ -5,12 +5,12 @@
 
 
 // setter and getter
-static void _setCurrentScene(Scene* scn, unsigned char index) {
+static void setCurrentScene(Scene* scn, unsigned char index) {
 	if(!(scn && scn->isInit == 1)) return; //secure
 	if(scn->sceneCount <= index) return;
 	scn->currentScene = index;
 }
-static unsigned char _getCurrentSceneIndex(Scene* scn) {
+static unsigned char getCurrentSceneIndex(const Scene* scn) {
 		if(!(scn && scn->isInit == 1)) return 0; //secure
 		return scn->currentScene;
 }
@@ -19,10 +19,10 @@ static unsigned char _getCurrentSceneIndex(Scene* scn) {
 
 
 // process
-static int _processLogic(Scene* scn) {
-	if(!(scn && scn->isInit == 1)) return -1;	// secure 
-	int (*process)(SceneBucket* b, Scene* scn);
+static int processLogic(Scene* scn) {
+	if(!(scn && scn->isInit == 1)) return -1;	// secure
 	unsigned char cur = scn->currentScene;
+	int (*process)(SceneBucket* b, Scene* scn);
 
 
 	// get pointer to ops and check init
@@ -33,7 +33,7 @@ static int _processLogic(Scene* scn) {
 	}
 	return -1;
 }
-static void _draw(Scene* scn) { 
+static void draw(Scene* scn) {
 	if(!(scn && scn->isInit == 1)) return;
 	void (*draw)(SceneBucket* b, Scene* scn);
 	unsigned char cur = scn->currentScene;
@@ -46,7 +46,7 @@ static void _draw(Scene* scn) {
 		draw(&scn->sceneArray[cur], scn);
 	}
 }
-static void _destroy(Scene* scn) {
+static void destroy(Scene* scn) {
 	if(!(scn && scn->isInit == 1)) return;
 	for(int i = 0; i < scn->sceneCount; i++) {
 		void (*destroy)(SceneBucket* b);
@@ -64,23 +64,23 @@ static void _destroy(Scene* scn) {
 
 
 // conf
-static void _add(Scene* scn, SceneBucket b) {
+static void add(Scene* scn, SceneBucket b) {
 	if(!(scn && scn->isInit == 1)) return; 
 	scn->sceneArray[scn->sceneCount] = b;
 	scn->sceneCount += 1;
 }
 
 static const SceneInterface ops = {
-	_setCurrentScene,
-	_getCurrentSceneIndex,
+	setCurrentScene,
+	getCurrentSceneIndex,
 
 	//process
-	_processLogic,
-	_draw,
-	_destroy,
+	processLogic,
+	draw,
+	destroy,
 
 	//conf
-	_add,
+	add,
 };
 
 
