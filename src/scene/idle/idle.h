@@ -3,7 +3,7 @@
 
 #include "scene.h"
 
-SceneBucket idleScene();
+scene idleScene();
 
 
 #endif

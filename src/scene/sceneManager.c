@@ -1,90 +1,54 @@
 #include "sceneManager.h"
 #include "platform.h"
+#include "scene.h"
 
-#include "idle.h"
-#include "mainMenu.h"
+#include "scnHashMap.h"
+#include <stddef.h>
 
-static Scene* scene_ref;
-static void _display() {
-	scene_ref->ops->draw(scene_ref);
-}
+static platform*	gpPlatform		= NULL;
+static scene*		pCurrnetScene	= NULL;
 
 //конкретная реализация игры
 static void _run(sceneManager* m) {
-	if(!(m && m->isInit == 1)) return;
-
-	int result = -1;
-	int game_shouldClose = 0;
-	while(!m->scn.plt->shouldClose(m->scn.plt) && !game_shouldClose) 
-	{
-
-		result = m->scn.ops->processLogic(&m->scn); // единоразовый обработчик логики
-		if(result == -1) game_shouldClose = -1;
-		switch(m->scn.currentScene) // в зависимости от текущей сцены.
-		{
-			case 0: {
-				if(result == 1) {
-					m->scn.currentScene = 1;
-				}
-				break;
-			}
-			case 1: {
-				if(result == 1) {
-					m->scn.currentScene = 3;
-				}
-				if(result == -2) {
-					m->scn.currentScene = 0;
-				}
-				if(result > 1) {
-					m->scn.currentScene = 2;
-					m->scn.gs.current_enemy_id = result;
-				}
-				break;
-			}
-
-			case 2: {
-				if(result == 1) {
-					m->scn.gs.persons[m->scn.gs.current_enemy_id].is_imprisoned = 1;
-				}
-				if(result == 2) {
-					m->scn.currentScene = 1;
-				}
-				break;
-			}
-
-			case 3: {
-				if(result == 1) {
-					m->scn.currentScene = 1;
-				}
-				break;
-			}
-		}
-
-		// отрисовка после блока обработки логики
-		m->scn.plt->render(m->scn.plt);
+	if(!m || !m->isInit || !pCurrnetScene) return;
+	// главный цикл игры
+	pCurrnetScene->ops->init();
+	while(!gpPlatform->ops->shouldClose(gpPlatform)) {
+		pCurrnetScene->ops->process();
+		gpPlatform->ops->render(gpPlatform);
 	}
 }
 
 static void _destroy(sceneManager* m) {
-	m->scn.ops->destroy(&m->scn);
+
+}
+
+static void add_scene(sceneManager* m, scene* s, const char* name) {
+	if (!m || !m->isInit || !s || !s->isInit || !name) return;
+	m->hMap->ops->put(m->hMap, name, sizeof(name)-1, s);
+}
+
+static void set_current(sceneManager* m, const char* name) {
+	if (!m || !m->isInit || !name) return;
+
+	scene* s = NULL;
+	int result = m->hMap->ops->get(m->hMap, name, sizeof(name)-1, &s);
+	if (result != HA_OUTCODE_OK) return;
+
+	gpPlatform->ops->setDisplayFunc(gpPlatform, s->ops->draw);
+	pCurrnetScene = s;
 }
 
 static const sceneManagerInterface ops = {
 	_run,
+	add_scene,
+	set_current,
 	_destroy
 };
 
-void sceneManagerInit(sceneManager* m, platform* plt) {
-	plt->setDisplayFunc(plt, _display);
-	plt->createWindow(plt, "window", 900, 900);
-	plt->platformInit(plt);
-
-	SceneInit(&m->scn, plt);
-	scene_ref = &m->scn;
-
-	m->scn.ops->add(&m->scn, mainMenuScene());
-	m->scn.ops->add(&m->scn, idleScene());
-	m->scn.currentScene = 0;
+void sceneManager_init(sceneManager* m, platform* plt) {
+	gpPlatform = plt;
 	m->ops = &ops;
 	m->isInit = 1;
+	scnHashMap_new(&m->hMap, 64);
 }

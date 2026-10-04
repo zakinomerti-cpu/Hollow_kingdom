@@ -1,4 +1,0 @@
-/home/xinitrix/projects/Hollow_kingdom/build/CMakeFiles/main.dir
-/home/xinitrix/projects/Hollow_kingdom/build/CMakeFiles/my_program.dir
-/home/xinitrix/projects/Hollow_kingdom/build/CMakeFiles/edit_cache.dir
-/home/xinitrix/projects/Hollow_kingdom/build/CMakeFiles/rebuild_cache.dir

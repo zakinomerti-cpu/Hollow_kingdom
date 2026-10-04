@@ -3,7 +3,7 @@
 
 #include "scene.h"
 
-SceneBucket mainMenuScene();
+scene mainMenuScene();
 
 
 #endif
